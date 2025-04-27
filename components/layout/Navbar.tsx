@@ -8,26 +8,28 @@ import {
   Search,
   ArrowLeft,
   Library,
+  Download,
+  HelpCircle
 } from "lucide-react"
 import Logo from "../ui/logo"
-import BrowseDropdown from "./NavbarBrowseDropdown"
 import NavbarSuiteDropdown from "./NavbarSuiteDropdown" 
 import { useTheme } from "@/store/theme-provider"
 import { useMediaQuery } from "@/hooks/use-media-query"
 import SideMenu, { useSideMenu, SideMenuButton } from "./NavbarSideMenu"
 import { cn } from "@/lib/utils"
+import NavbarDownloadDropdown from "./NavbarDownloadDropdown" 
 
 export default function Navbar() {
   const [isSearchOpen, setIsSearchOpen] = useState(false)
   const [isScrolled, setIsScrolled] = useState(false)
-  const [isBrowseOpen, setIsBrowseOpen] = useState(false)
+  const [isDownloadOpen, setIsDownloadOpen] = useState(false)
   const [isFilterOpen, setIsFilterOpen] = useState(false)
   const [searchQuery, setSearchQuery] = useState("")
   const [lastSearchQuery, setLastSearchQuery] = useState("")
   const searchInputRef = useRef<HTMLInputElement>(null)
   const searchContainerRef = useRef<HTMLDivElement>(null)
   const filterRef = useRef<HTMLDivElement>(null)
-  const browseRef = useRef<HTMLDivElement>(null)
+  const downloadRef = useRef<HTMLDivElement>(null)
   const searchBarRef = useRef<HTMLDivElement>(null)
   const pathname = usePathname()
   const router = useRouter()
@@ -41,7 +43,7 @@ export default function Navbar() {
   const { isMenuOpen, toggleMenu, closeMenu } = useSideMenu()
 
   const [hoverTimeout, setHoverTimeout] = useState<NodeJS.Timeout | null>(null)
-  const [browseOpenedByClick, setBrowseOpenedByClick] = useState(false)
+  const [downloadOpenedByClick, setDownloadOpenedByClick] = useState(false)
 
   useEffect(() => {
     const q = searchParams.get("q")
@@ -91,48 +93,48 @@ export default function Navbar() {
       }
 
       if (
-        isBrowseOpen &&
-        browseRef.current &&
-        !browseRef.current.contains(e.target as Node)
+        isDownloadOpen &&
+        downloadRef.current &&
+        !downloadRef.current.contains(e.target as Node)
       ) {
-        setIsBrowseOpen(false)
-        setBrowseOpenedByClick(false)
+        setIsDownloadOpen(false)
+        setDownloadOpenedByClick(false)
       }
     }
 
     document.addEventListener("mousedown", handleClickOutside)
     return () => document.removeEventListener("mousedown", handleClickOutside)
-  }, [isSearchOpen, isFilterOpen, isBrowseOpen])
+  }, [isSearchOpen, isFilterOpen, isDownloadOpen])
 
-  const handleBrowseMouseEnter = () => {
+  const handleDownloadMouseEnter = () => {
     if (hoverTimeout) {
       clearTimeout(hoverTimeout)
       setHoverTimeout(null)
     }
 
-    if (!browseOpenedByClick) {
-      setIsBrowseOpen(true)
+    if (!downloadOpenedByClick) {
+      setIsDownloadOpen(true)
     }
   }
 
-  const handleBrowseMouseLeave = () => {
+  const handleDownloadMouseLeave = () => {
     const timeout = setTimeout(() => {
-      setIsBrowseOpen(false)
-      setBrowseOpenedByClick(false)
+      setIsDownloadOpen(false)
+      setDownloadOpenedByClick(false)
     }, 300)
     setHoverTimeout(timeout)
   }
 
-  const handleBrowseClick = (e: React.MouseEvent) => {
+  const handleDownloadClick = (e: React.MouseEvent) => {
     e.stopPropagation()
 
-    const newState = !isBrowseOpen
-    setIsBrowseOpen(newState)
+    const newState = !isDownloadOpen
+    setIsDownloadOpen(newState)
 
     if (!newState) {
-      setBrowseOpenedByClick(false)
+      setDownloadOpenedByClick(false)
     } else {
-      setBrowseOpenedByClick(true)
+      setDownloadOpenedByClick(true)
     }
   }
 
@@ -192,11 +194,11 @@ export default function Navbar() {
   `
 
   const getCurrentSection = () => {
-    if (pathname.startsWith("/explore")) return "Explore"
-    if (pathname.startsWith("/browse")) return "Browse"
-    if (pathname.startsWith("/journals")) return "Journals"
-    if (pathname.startsWith("/library")) return "My Library"
-    if (pathname.startsWith("/search")) return "Search"
+    if (pathname.startsWith("/about")) return "About"
+    if (pathname.startsWith("/download")) return "Downloads"
+    if (pathname.startsWith("/contact")) return "Contact"
+    if (pathname.startsWith("/faq")) return "FAQ"
+    if (pathname.startsWith("/careers")) return "Careers"
     return null
   }
 
@@ -210,7 +212,7 @@ export default function Navbar() {
               <SideMenuButton isMenuOpen={isMenuOpen} toggleMenu={toggleMenu} />
 
             {isDesktop ? (
-              <Logo size="medium" />
+              <Logo size="medium" withTagline={true} />
             ) : (
               <>
                 <div className="absolute left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2">
@@ -219,7 +221,7 @@ export default function Navbar() {
                       {currentSection}
                     </span>
                   ) : (
-                    <Logo size="medium" />
+                    <Logo size="small" withTagline={true} />
                   )}
                 </div>
                 <div className="w-8"></div>
@@ -228,37 +230,29 @@ export default function Navbar() {
 
             {isLargeDesktop && (
               <div className="flex ml-4">
-                <Link href="/explore" className={linkClasses("/explore")}>
-                  Explore
-                </Link>
 
                 <div
-                  ref={browseRef}
+                  ref={downloadRef}
                   className="relative"
-                  onMouseLeave={handleBrowseMouseLeave}
+                  onMouseLeave={handleDownloadMouseLeave}
                 >
                   <div className="flex items-center rounded-md transition-colors font-medium hover:bg-muted">
                     <Link
-                      href="/browse"
+                      href="/download"
                       className={`pl-3 py-2 text-sm ${
-                        isActive("/browse") ||
-                        isActive("browse/subjects") ||
-                        isActive("browse/titles") ||
-                        isActive("/browse/years")
-                          ? "text-primary"
-                          : ""
+                        isActive("/download") ? "text-primary" : ""
                       }`}
                     >
-                      Browse
+                      Downloads
                     </Link>
                     <button
-                      onClick={handleBrowseClick}
+                      onClick={handleDownloadClick}
                       className="p-2 pl-1 rounded-lg transition-colors duration-200"
-                      aria-label="Browse options"
-                      onMouseEnter={handleBrowseMouseEnter}
+                      aria-label="Download options"
+                      onMouseEnter={handleDownloadMouseEnter}
                     >
                       <div className="transform transition-transform duration-200">
-                        {isBrowseOpen ? (
+                        {isDownloadOpen ? (
                           <ChevronDown
                             size={16}
                             className="transform rotate-180 transition-transform duration-200"
@@ -273,25 +267,25 @@ export default function Navbar() {
                     </button>
                   </div>
 
-                  {isBrowseOpen && (
+                  {isDownloadOpen && (
                     <>
                       <div
                         className="fixed inset-0 top-16 bg-background/30 backdrop-blur-sm z-40 transition-opacity duration-200 ease-in-out"
                         onClick={() => {
-                          setIsBrowseOpen(false)
-                          setBrowseOpenedByClick(false)
+                          setIsDownloadOpen(false)
+                          setDownloadOpenedByClick(false)
                         }}
                       ></div>
 
                       <div
                         className="absolute left-0 top-full z-50"
-                        onMouseEnter={handleBrowseMouseEnter}
-                        onMouseLeave={handleBrowseMouseLeave}
+                        onMouseEnter={handleDownloadMouseEnter}
+                        onMouseLeave={handleDownloadMouseLeave}
                       >
-                        <BrowseDropdown
+                        <NavbarDownloadDropdown
                           onSelect={() => {
-                            setIsBrowseOpen(false)
-                            setBrowseOpenedByClick(false)
+                            setIsDownloadOpen(false)
+                            setDownloadOpenedByClick(false)
                           }}
                         />
                       </div>
@@ -299,71 +293,18 @@ export default function Navbar() {
                   )}
                 </div>
 
-                <Link href="/journals" className={linkClasses("/journals")}>
-                  Journals
+                <Link href="/faq" className={linkClasses("/faq")}>
+                  FAQs
                 </Link>
               </div>
             )}
           </div>
 
           <div className="flex-shrink-0 flex items-center space-x-2">
-            {!isDesktop && (
-              <button
-                onClick={toggleSearch}
-                className="p-2 rounded-full hover:bg-muted transition-colors duration-200"
-                aria-label="Search"
-              >
-                <Search size={22} />
-              </button>
-            )}
 
             <NavbarSuiteDropdown />
-
-            
-            {isDesktop && (
-              isLargeDesktop ? (
-                <Link href="/library" className={linkClasses("/library")}>
-                  My Library
-                </Link>
-              ) : (
-                <Link
-                  href="/library"
-                  className="p-2 rounded-full hover:bg-muted transition-colors duration-200"
-                  aria-label="My Library"
-                >
-                  <Library size={22} />
-                </Link>
-              )
-            )}
           </div>
         </div>
-
-        {!isDesktop && ((isSearchOpen && !isSearchPage) || isSearchPage) && (
-          <>
-            {isSearchOpen && !isSearchPage && (
-              <div
-                className="fixed inset-0 top-0 bg-black/60 z-40 transition-opacity duration-300 ease-in-out"
-                onClick={() => setIsSearchOpen(false)}
-              ></div>
-            )}
-            <div
-              ref={searchContainerRef}
-              className="absolute top-0 left-0 right-0 z-40 h-14 bg-background border-t border-b flex items-center pl-0.5 pr-3 transform transition-all duration-300 ease-in-out"
-            >
-              <div className="flex items-center justify-between w-full">
-                <div className="flex items-center w-full">
-                  <button
-                    onClick={isSearchPage ? handleBackAction : closeSearch}
-                    className="p-2 rounded-full hover:bg-muted transition-colors duration-200 mr-1"
-                    aria-label={isSearchPage ? "Back" : "Close search"}
-                  >
-                    <ArrowLeft size={20} />
-                  </button>
-                </div>
-              </div>
-            </div>
-          </>
-        )}
       </div>
 
       <SideMenu
