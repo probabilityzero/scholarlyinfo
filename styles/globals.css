@@ -1,0 +1,144 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+}
+
+:root {
+  /* Border radius consistency */
+  --radius: 0.625rem;
+  
+  /* Light mode colors - Updated to be warmer and less gray-blue */
+  --background: 40 30% 97%; /* Warmer light background */
+  --foreground: 25 25% 15%; /* Warm dark text */
+  
+  --card: 0 0% 100%; /* Pure white cards */
+  --card-foreground: 25 25% 20%; /* Warm dark text for cards */
+
+  --popover: 0 0% 100%;
+  --popover-foreground: 25 25% 20%;
+
+  --primary: 30 70% 45%; /* Rich brown accent */
+  --primary-foreground: 0 0% 100%; /* White text for contrast */
+
+  --secondary: 35 65% 40%; /* Slightly warmer brown variant */
+  --secondary-foreground: 0 0% 100%;
+
+  --muted: 35 25% 92%; /* Warm light muted background */
+  --muted-foreground: 25 20% 35%;
+
+  --accent: 25 75% 50%; /* Vibrant warm accent */
+  --accent-foreground: 0 0% 100%;
+
+  --destructive: 0 85% 50%; /* Vibrant error red */
+  --destructive-foreground: 0 0% 100%;
+
+  --border: 35 15% 85%;
+  --input: 35 15% 90%;
+  --ring: 30 70% 45%;
+
+  --chart-1: 12 76% 61%;
+  --chart-2: 173 58% 39%;
+  --chart-3: 197 37% 24%;
+  --chart-4: 43 74% 66%;
+  --chart-5: 27 87% 67%;
+  
+  --sidebar-background: 40 30% 98%;
+  --sidebar-foreground: 25 25% 26%;
+  --sidebar-primary: 25 70% 40%;
+  --sidebar-primary-foreground: 0 0% 98%;
+  --sidebar-accent: 35 25% 95%;
+  --sidebar-accent-foreground: 25 25% 15%;
+  --sidebar-border: 35 15% 90%;
+  --sidebar-ring: 30 80% 50%;
+}
+
+.dark {
+  /* Dark mode colors - Warmer and less blue-gray */
+  --background: 25 20% 10%; /* Warm dark background */
+  --foreground: 35 15% 90%; /* Warm light text */
+
+  --card: 25 15% 15%; /* Warmer dark cards */
+  --card-foreground: 35 15% 90%;
+
+  --popover: 25 15% 15%;
+  --popover-foreground: 35 15% 90%;
+
+  --primary: 25 65% 55%; /* Warm primary accent */
+  --primary-foreground: 0 0% 100%;
+
+  --secondary: 30 60% 45%;
+  --secondary-foreground: 0 0% 100%;
+
+  --muted: 25 15% 18%; /* Slightly lighter than background */
+  --muted-foreground: 35 10% 80%;
+
+  --accent: 30 70% 45%;
+  --accent-foreground: 0 0% 100%;
+
+  --destructive: 0 85% 60%;
+  --destructive-foreground: 0 0% 100%;
+
+  --border: 25 20% 22%;
+  --input: 25 15% 20%;
+  --ring: 25 65% 55%;
+  
+  --chart-1: 25 70% 60%;
+  --chart-2: 160 60% 45%;
+  --chart-3: 40 75% 55%;
+  --chart-4: 120 55% 45%;
+  --chart-5: 0 65% 55%;
+  
+  --sidebar-background: 25 20% 12%;
+  --sidebar-foreground: 35 15% 90%;
+  --sidebar-primary: 25 65% 55%;
+  --sidebar-primary-foreground: 0 0% 100%;
+  --sidebar-accent: 25 15% 20%;
+  --sidebar-accent-foreground: 35 15% 90%;
+  --sidebar-border: 25 15% 20%;
+  --sidebar-ring: 25 70% 60%;
+}
+
+/* Base Styles */
+@layer base {
+  * {
+    @apply border-border;
+  }
+  
+  body {
+    @apply bg-background text-foreground;
+    font-family: 'Noto Sans', 'Roboto', sans-serif;
+    font-weight: 300;
+    line-height: 1.6;
+  }
+
+  h1, h2, h3 {
+    font-family: 'EB Garamond', 'Garamond', 'Times New Roman', serif;
+    font-weight: 500;
+    letter-spacing: -0.015em;
+    line-height: 1.3;
+  }
+
+  h4, h5, h6 {
+    font-family: 'Noto Sans', 'Roboto', sans-serif;
+    font-weight: 500;
+  }
+  
+  /* Apply consistent font-serif class */
+  .font-serif {
+    font-family: 'EB Garamond', 'Garamond', 'Times New Roman', serif;
+  }
+}
+
+.no-scrollbar::-webkit-scrollbar { display: none; }
+.no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+
+/* Radius utility classes */
+.radius-sm { border-radius: calc(var(--radius) - 4px); }
+.radius-md { border-radius: calc(var(--radius) - 2px); }
+.radius-lg { border-radius: var(--radius); }
+.radius-xl { border-radius: calc(var(--radius) + 4px); }

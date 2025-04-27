@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Debug</title>
+  <style>
+    body { font-family: system-ui, sans-serif; padding: 2rem; }
+    pre { background: #f1f1f1; padding: 1rem; border-radius: 0.5rem; }
+  </style>
+</head>
+<body>
+  <h1>Debug Page</h1>
+  <p>If you see this, basic HTML is working on tdomain</p>
+  
+  <div id="info"></div>
+  
+  <script>
+    const infoEl = document.getElementById('info');
+    infoEl.innerHTML = `
+      <h2>Page Information</h2>
+      <pre>${JSON.stringify({
+        hostname: window.location.hostname,
+        pathname: window.location.pathname,
+        href: window.location.href,
+        userAgent: navigator.userAgent,
+        time: new Date().toISOString()
+      }, null, 2)}</pre>
+    `;
+  </script>
+</body>
+</html>

@@ -1,0 +1,4 @@
+.pattern-dots-lg {
+  background-image: radial-gradient(currentColor 1px, transparent 1px);
+  background-size: 24px 24px;
+}
