@@ -19,8 +19,7 @@ export default function AppDownloadPage() {
   }, [isMobile]);
 
   const breadcrumbItems = [
-    { label: 'Info', href: '/info' },
-    { label: 'Apps', current: true }
+    { label: 'Download Apps', current: true }
   ];
 
   return (
